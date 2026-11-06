@@ -1,0 +1,3 @@
+﻿  Binary_file.cpp
+C:\files_assignment\files-assignment-1\.vs\src\Binary_file.cpp(21,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  src.vcxproj -> C:\files_assignment\files-assignment-1\.vs\src\x64\Debug\src.exe

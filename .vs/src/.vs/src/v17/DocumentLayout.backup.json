@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\files_assignment\\files-assignment-1\\.vs\\src\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{329F2654-82F9-4869-ACC0-7E2F74B3F447}|src.vcxproj|C:\\files_assignment\\files-assignment-1\\.vs\\src\\Binary_file.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{329F2654-82F9-4869-ACC0-7E2F74B3F447}|src.vcxproj|solutionrelative:Binary_file.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Binary_file.cpp",
+              "DocumentMoniker": "C:\\files_assignment\\files-assignment-1\\.vs\\src\\Binary_file.cpp",
+              "RelativeDocumentMoniker": "Binary_file.cpp",
+              "ToolTip": "C:\\files_assignment\\files-assignment-1\\.vs\\src\\Binary_file.cpp",
+              "RelativeToolTip": "Binary_file.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-11-06T20:25:51.143Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
