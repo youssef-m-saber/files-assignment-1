@@ -1,24 +1,12 @@
+#include "Binary_file.h"
 #include <iostream>
 #include <fstream>
 #include <cstring>
 using namespace std;
-const int DOC_SIZE = 95;
-const int APP_SIZE = 60;
-const int HEADER_SIZE = sizeof(int);
-struct Doctor {
-    char id[15];
-    char name[30];
-    char specialty[20];
-    char address[30];
-};
-struct Appointment {
-    char id[15];
-    char date[30];
-    char doctorId[15];
-};
+
 void setField(char field[], int size, const char text[]) {
     memset(field, ' ', size);
-    int len = strlen(text);
+    int len = static_cast<int>(strlen(text));
     if (len > size) len = size;
     memcpy(field, text, len);
 }
@@ -72,7 +60,7 @@ int getFileEnd(fstream& f) {
 }
 bool validOffset(fstream& f, int offset, int recSize) {
     if (offset < HEADER_SIZE) return false;
-    if (offset >= getFileEnd(f)) return false;
+    if (recSize <= 0 || offset > getFileEnd(f) - recSize) return false;
     if ((offset - HEADER_SIZE) % recSize != 0) return false;
     return true;
 }
@@ -80,8 +68,7 @@ bool readRecord(fstream& f, int offset, char rec[], int recSize) {
     if (!validOffset(f, offset, recSize)) return false;
     f.clear();
     f.seekg(offset, ios::beg);
-    f.read(rec, recSize);
-    return true;
+    return static_cast<bool>(f.read(rec, recSize));
 }
 bool writeRecord(fstream& f, int offset, const char rec[], int recSize) {
     if (!validOffset(f, offset, recSize)) return false;
@@ -89,7 +76,7 @@ bool writeRecord(fstream& f, int offset, const char rec[], int recSize) {
     f.seekp(offset, ios::beg);
     f.write(rec, recSize);
     f.flush();
-    return true;
+    return static_cast<bool>(f);
 }
 bool isDeleted(fstream& f, int offset, int recSize) {
     char rec[100];
@@ -134,7 +121,7 @@ bool deleteRecord(fstream& f, int offset, int recSize) {
 }
 void printDoctor(fstream& f, int offset) {
     char rec[DOC_SIZE];
-    readRecord(f, offset, rec, DOC_SIZE);
+    if (!readRecord(f, offset, rec, DOC_SIZE)) { cout << "Cannot read doctor at offset " << offset << endl; return; }
     if (rec[0] == '*') { cout << "offset " << offset << " : [DELETED]" << endl; return; }
     Doctor d;
     memcpy(&d, rec, DOC_SIZE);
@@ -142,6 +129,4 @@ void printDoctor(fstream& f, int offset) {
     getField(d.id, 15, id);
     getField(d.name, 30, name);
     cout << "offset " << offset << " : " << id << " , " << name << endl;
-}
-int main() {
 }
