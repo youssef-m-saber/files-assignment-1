@@ -1,11 +1,14 @@
 #pragma once
 #include "Binary_file.h"
+#include <cstddef>
 #include <string>
 #include <vector>
 
+// Member 2: ALL three sorted index tables live on DISK, not in vectors.
+// Binary search reads individual index entries directly from disk.
+// The secondary linked-list nodes are kept in two separate disk files.
 class DoctorsManager {
 public:
-    
     explicit DoctorsManager(std::string dataPath = "Doctors.dat");
     bool initialize(bool seedFive = true);
     bool addDoctor(const std::string& id, const std::string& name,
@@ -15,37 +18,27 @@ public:
     bool updateDoctorID(const std::string& oldId, const std::string& newId);
     bool updateDoctorSpecialty(const std::string& id, const std::string& specialty);
     bool updateDoctorAddress(const std::string& id, const std::string& address);
-
     bool findDoctorByID(const std::string& id, Doctor& result) const;
     std::vector<Doctor> findDoctorsByName(const std::string& name) const;
     std::vector<Doctor> findDoctorsBySpecialty(const std::string& specialty) const;
     std::vector<Doctor> listAllDoctors() const;
-    size_t count() const;
-    int recordOffset(const std::string& id) const; // -1 if missing
+    std::size_t count() const;
+    int recordOffset(const std::string& id) const;
     bool validateIndexes() const;
 
 private:
-    struct PrimaryEntry { std::string id; int offset; };
-    struct SecondaryEntry { std::string key; int head; };
-    std::string dataPath_, nameNodesPath_, specialtyNodesPath_;
-    std::vector<PrimaryEntry> primary_;                
-    std::vector<SecondaryEntry> byName_, bySpecialty_; 
-
-    static bool validText(const std::string& value, size_t limit, bool id = false);
-    static std::string field(const char* data, int length);
-    int primaryPosition(const std::string& id) const; 
-    int secondaryPosition(const std::vector<SecondaryEntry>& index, const std::string& key) const;
+    std::string dataPath_, primaryPath_, nameIndexPath_, specialtyIndexPath_;
+    std::string nameNodesPath_, specialtyNodesPath_;
+    static bool validText(const std::string& value, std::size_t limit, bool id = false);
+    static std::string field(const char* raw, int width);
     bool readAt(int offset, Doctor& result) const;
     bool writeAt(int offset, const Doctor& doctor);
     bool rebuildIndexes();
-    bool buildSecondaryFiles();
-    bool writeSecondary(const std::string& path,
-                        const std::vector<std::pair<std::string,std::string>>& items,
-                        std::vector<SecondaryEntry>& index);
+    bool referencedByAppointment(const std::string& id) const;
     std::vector<Doctor> findSecondary(const std::string& key,
-                                     const std::vector<SecondaryEntry>& index,
-                                     const std::string& nodePath) const;
-    bool referencedByAppointment(const std::string& doctorId) const;
+                                     const std::string& indexPath,
+                                     const std::string& nodesPath,
+                                     int keyWidth) const;
 };
 
 void printDoctorDetails(const Doctor& doctor);
