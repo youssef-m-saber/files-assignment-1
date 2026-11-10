@@ -31,8 +31,6 @@ static string readLine(const string& prompt) {
     return trimText(line);
 }
 
-// Keeps asking until the value fits the fixed-length field of the record.
-// Returns false only when the input stream is closed.
 static bool readField(const string& label, size_t maxLen, string& value) {
     while (true) {
         value = readLine("Enter " + label + " (max " + to_string(maxLen) + " chars): ");
